@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint CircleProgressView.podspec' to ensure this is a
+# Be sure to run `pod lib lint UICircleProgressView.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'UICircleProgressView'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = 'An AppStore like download-progress circle-indicator view.'
 
 # This description is used to generate tags and improve search results.
@@ -31,10 +31,10 @@ Shows a progress-circle which changes according to the current status and progre
   s.ios.deployment_target = '8.0'
   s.swift_version         = '4.2'
 
-  s.source_files = 'CircleProgressView/Classes/**/*'
+  s.source_files = 'UICircleProgressView/Classes/**/*'
   
   # s.resource_bundles = {
-  #   'CircleProgressView' => ['CircleProgressView/Assets/*.png']
+  #   'UICircleProgressView' => ['UICircleProgressView/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
