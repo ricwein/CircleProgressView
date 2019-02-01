@@ -1,15 +1,12 @@
 //
-//  HMCircleProgressView.swift
-//  iRescue
-//
+//  UICircleProgressView.swift
 //  Created by Richard Weinhold on 01.02.19.
-//  Copyright © 2019 Technische Universität Bergakademie Freiberg. All rights reserved.
 //
 
 import UIKit
 
 @IBDesignable
-public class CircleProgressView: UIView
+public class UICircleProgressView: UIView
 {
     public enum DownloadStatus: String
     {

@@ -7,8 +7,8 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'CircleProgressView'
-  s.version          = '0.1.3'
+  s.name             = 'UICircleProgressView'
+  s.version          = '0.2.0'
   s.summary          = 'An AppStore like download-progress circle-indicator view.'
 
 # This description is used to generate tags and improve search results.
