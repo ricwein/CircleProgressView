@@ -1,28 +1,30 @@
 # CircleProgressView
 
-[![Version](https://img.shields.io/cocoapods/v/CircleProgressView.svg?style=flat)](https://cocoapods.org/pods/CircleProgressView)
-[![License](https://img.shields.io/cocoapods/l/CircleProgressView.svg?style=flat)](https://cocoapods.org/pods/CircleProgressView)
-[![Platform](https://img.shields.io/cocoapods/p/CircleProgressView.svg?style=flat)](https://cocoapods.org/pods/CircleProgressView)
+[![Version](https://img.shields.io/cocoapods/v/UICircleProgressView.svg?style=flat)](https://cocoapods.org/pods/UICircleProgressView)
+[![License](https://img.shields.io/cocoapods/l/UICircleProgressView.svg?style=flat)](https://cocoapods.org/pods/UICircleProgressView)
+[![Platform](https://img.shields.io/cocoapods/p/UICircleProgressView.svg?style=flat)](https://cocoapods.org/pods/UICircleProgressView)
 
 An AppStore like download-progress circle-indicator view.
 
 ## Installation
 
-CircleProgressView is available through [CocoaPods](https://cocoapods.org). To install
+UICircleProgressView is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
 ```ruby
-pod 'CircleProgressView'
+pod 'UICircleProgressView'
 ```
 
 ## Usage
 
 User either:
-- the Interface-Build to create a `UIView` and set it's base-class to `CircleProgressView`
-- create a CircleProgressView in source:
+- the Interface-Build to create a `UIView` and set it's base-class to `UICircleProgressView`
+- create a UICircleProgressView in source:
 
 ```Swift
-let progressView = CircleProgressView(frame: CGRect(x: 20, y: 20, width: 24, height: 24))
+import UICircleProgressView
+
+let progressView = UICircleProgressView(frame: CGRect(x: 20, y: 20, width: 24, height: 24))
 progressView.tintColor = .blue
 progressView.strokeWidth = 4.0
 progressView.status = .remote
