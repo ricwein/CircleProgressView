@@ -9,7 +9,7 @@
 Pod::Spec.new do |s|
   s.name             = 'CircleProgressView'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of CircleProgressView.'
+  s.summary          = 'An AppStore like download-progress circle-indicator view.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -18,17 +18,18 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+An Apple AppStore like download-progress indicator.
+Shows a progress-circle which changes according to the current status and progress into a full circle.
                        DESC
 
-  s.homepage         = 'https://github.com/Richard Weinhold/CircleProgressView'
+  s.homepage         = 'https://github.com/ricwein/CircleProgressView'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
-  s.author           = { 'Richard Weinhold' => 'privat@ricwein.com' }
-  s.source           = { :git => 'https://github.com/Richard Weinhold/CircleProgressView.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
+  s.author           = { 'Richard Weinhold' => 'git@ricwein.com' }
+  s.source           = { :git => 'https://github.com/ricwein/CircleProgressView.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
+  s.swift_version         = '4.2'
 
   s.source_files = 'CircleProgressView/Classes/**/*'
   
