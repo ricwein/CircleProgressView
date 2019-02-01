@@ -1,0 +1,6 @@
+use_frameworks!
+target 'CircleProgressView_Tests' do
+  pod 'CircleProgressView', :path => '../'
+  
+  
+end
