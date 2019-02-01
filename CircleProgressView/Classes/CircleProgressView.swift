@@ -9,9 +9,9 @@
 import UIKit
 
 @IBDesignable
-class CircleProgressView: UIView
+public class CircleProgressView: UIView
 {
-    enum DownloadStatus: String
+    public enum DownloadStatus: String
     {
         case remote
         case downloading
@@ -23,20 +23,20 @@ class CircleProgressView: UIView
     private var progressCircle = CAShapeLayer()
     private var backgroundCircle = CAShapeLayer()
 
-    required init?(coder: NSCoder)
+    public required init?(coder: NSCoder)
     {
         super.init(coder: coder)
         self.drawCircle()
     }
 
-    override init(frame: CGRect)
+    public override init(frame: CGRect)
     {
         super.init(frame: frame)
         self.drawCircle()
     }
 
     @IBInspectable
-    var strokeWidth: CGFloat = 3.0 {
+    public var strokeWidth: CGFloat = 3.0 {
         willSet
         {
             self.strokeWidth = max(min(newValue, self.frame.height / 2.0, self.frame.width / 2.0), 0.0)
@@ -50,7 +50,7 @@ class CircleProgressView: UIView
     }
 
     @IBInspectable
-    var progress: Float = 0.0 {
+    public var progress: Float = 0.0 {
         willSet
         {
             self.progress = max(min(newValue, 1.0), 0.0)
@@ -63,7 +63,7 @@ class CircleProgressView: UIView
 
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'status' instead.")
     @IBInspectable
-    var statusType: String? = "downloading"
+    public var statusType: String? = "downloading"
     {
         willSet
         {
@@ -74,7 +74,7 @@ class CircleProgressView: UIView
         }
     }
 
-    var status: DownloadStatus = .remote
+    public var status: DownloadStatus = .remote
     {
         didSet
         {
@@ -93,7 +93,7 @@ class CircleProgressView: UIView
         }
     }
 
-    override func tintColorDidChange()
+    public override func tintColorDidChange()
     {
         self.backgroundCircle.strokeColor = self.tintColor.cgColor
 
