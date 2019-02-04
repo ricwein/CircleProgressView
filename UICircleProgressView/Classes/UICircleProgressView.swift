@@ -15,6 +15,8 @@ public class UICircleProgressView: UIView
         case paused
         case resumed
         case success
+        case waiting
+        case canceled
     }
 
     private var progressCircle = CAShapeLayer()
@@ -33,7 +35,8 @@ public class UICircleProgressView: UIView
     }
 
     @IBInspectable
-    public var strokeWidth: CGFloat = 3.0 {
+    public var strokeWidth: CGFloat = 3.0
+    {
         willSet
         {
             self.strokeWidth = max(min(newValue, self.frame.height / 2.0, self.frame.width / 2.0), 0.0)
@@ -47,7 +50,8 @@ public class UICircleProgressView: UIView
     }
 
     @IBInspectable
-    public var progress: Float = 0.0 {
+    public var progress: Float = 0.0
+    {
         willSet
         {
             self.progress = max(min(newValue, 1.0), 0.0)
@@ -58,13 +62,38 @@ public class UICircleProgressView: UIView
         }
     }
 
+    @IBInspectable
+    public var successColor: UIColor = UIColor.green
+    {
+        didSet { self.refreshStatusColor() }
+    }
+
+    @IBInspectable
+    public var pauseColor: UIColor = UIColor.lightGray
+    {
+        didSet { self.refreshStatusColor() }
+    }
+
+    @IBInspectable
+    public var cancelColor: UIColor = UIColor.red
+    {
+        didSet { self.refreshStatusColor() }
+    }
+
+    public override func tintColorDidChange()
+    {
+        self.refreshStatusColor()
+    }
+
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'status' instead.")
     @IBInspectable
     public var statusType: String? = "downloading"
     {
         willSet
         {
-            if let newStatus = DownloadStatus(rawValue: newValue?.lowercased() ?? "")
+            if
+                let typeName = newValue,
+                let newStatus = DownloadStatus(rawValue: typeName.lowercased())
             {
                 self.status = newStatus
             }
@@ -73,32 +102,31 @@ public class UICircleProgressView: UIView
 
     public var status: DownloadStatus = .remote
     {
-        didSet
-        {
-            switch self.status {
-                case .remote:
-                    self.progressCircle.strokeColor = UIColor.gray.cgColor
-                case .downloading:
-                    self.progressCircle.strokeColor = self.tintColor.cgColor
-                case .success:
-                    self.progressCircle.strokeColor = UIColor.green.cgColor
-                case .paused:
-                    self.progressCircle.strokeColor = UIColor.gray.cgColor
-                case .resumed:
-                    self.progressCircle.strokeColor = self.tintColor.cgColor
-            }
-        }
+        didSet { self.refreshStatusColor() }
     }
 
-    public override func tintColorDidChange()
+    private func refreshStatusColor()
     {
-        self.backgroundCircle.strokeColor = self.tintColor.cgColor
-
         switch self.status {
+            case .remote:
+                self.progressCircle.strokeColor = self.pauseColor.cgColor
+                self.backgroundCircle.strokeColor = self.tintColor.cgColor
+
             case .downloading, .resumed:
                 self.progressCircle.strokeColor = self.tintColor.cgColor
-            default:
-                return
+                self.backgroundCircle.strokeColor = self.tintColor.cgColor
+
+            case .success:
+                self.progressCircle.strokeColor = self.successColor.cgColor
+                self.backgroundCircle.strokeColor = self.successColor.cgColor
+
+            case .paused, .waiting:
+                self.progressCircle.strokeColor = self.pauseColor.cgColor
+                self.backgroundCircle.strokeColor = self.pauseColor.cgColor
+
+            case .canceled:
+                self.progressCircle.strokeColor = self.cancelColor.cgColor
+                self.backgroundCircle.strokeColor = self.cancelColor.cgColor
         }
     }
 
