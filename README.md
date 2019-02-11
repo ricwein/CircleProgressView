@@ -6,6 +6,10 @@
 
 An AppStore like download-progress circle-indicator view.
 
+> Preview: <br>
+> ![](./images/downloading.png)
+> ![](./images/success.png)
+
 ## Installation
 
 UICircleProgressView is available through [CocoaPods](https://cocoapods.org). To install
