@@ -24,10 +24,9 @@ Use either:
 ```Swift
 import UICircleProgressView
 
-let progressView = UICircleProgressView(frame: CGRect(x: 20, y: 20, width: 24, height: 24))
+let progressView = UICircleProgressView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
 progressView.tintColor = .blue
-progressView.strokeWidth = 4.0
-progressView.status = .remote
+progressView.status = .waiting
 progressView.progress = 0.0
 
 // starting download...
@@ -35,7 +34,9 @@ progressView.status = .downloading
 
 for progress in stride(from: 0.0, to: 1.0, by: 0.01) {
     progressView.progress = progress
+    usleep(10000)
 }
+progressView.status = .success
 ```
 
 ## License
