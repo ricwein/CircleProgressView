@@ -19,70 +19,31 @@ public class UICircleProgressView: UIView
         case canceled
     }
 
-    private var progressCircle = CAShapeLayer()
-    private var backgroundCircle = CAShapeLayer()
-
-    public required init?(coder: NSCoder)
+    private func newCircleLayer() -> CAShapeLayer
     {
-        super.init(coder: coder)
-        self.drawCircle()
+        let shape = CAShapeLayer()
+        self.layer.addSublayer(shape)
+        return shape
+    }
+
+    private lazy var progressCircle: CAShapeLayer = self.newCircleLayer()
+    private lazy var backgroundCircle: CAShapeLayer = self.newCircleLayer()
+
+    private var maxFrameSize: CGFloat
+    {
+        return min(self.frame.height, self.frame.width)
     }
 
     public override init(frame: CGRect)
     {
         super.init(frame: frame)
-        self.drawCircle()
+        self.setup()
     }
 
-    @IBInspectable
-    public var strokeWidth: CGFloat = 3.0
+    public required init?(coder: NSCoder)
     {
-        willSet
-        {
-            self.strokeWidth = max(min(newValue, self.frame.height / 2.0, self.frame.width / 2.0), 0.0)
-        }
-
-        didSet
-        {
-            self.progressCircle.path = self.getCirclePath(for: self.strokeWidth)
-            self.progressCircle.lineWidth = self.strokeWidth
-        }
-    }
-
-    @IBInspectable
-    public var progress: Float = 0.0
-    {
-        willSet
-        {
-            self.progress = max(min(newValue, 1.0), 0.0)
-        }
-        didSet
-        {
-            self.progressCircle.strokeEnd = CGFloat(self.progress)
-        }
-    }
-
-    @IBInspectable
-    public var successColor: UIColor = UIColor.green
-    {
-        didSet { self.refreshStatusColor() }
-    }
-
-    @IBInspectable
-    public var pauseColor: UIColor = UIColor.lightGray
-    {
-        didSet { self.refreshStatusColor() }
-    }
-
-    @IBInspectable
-    public var cancelColor: UIColor = UIColor.red
-    {
-        didSet { self.refreshStatusColor() }
-    }
-
-    public override func tintColorDidChange()
-    {
-        self.refreshStatusColor()
+        super.init(coder: coder)
+        self.setup()
     }
 
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'status' instead.")
@@ -102,14 +63,127 @@ public class UICircleProgressView: UIView
 
     public var status: DownloadStatus = .remote
     {
-        didSet { self.refreshStatusColor() }
+        didSet { self.updateStatusColor() }
     }
 
-    private func refreshStatusColor()
+    @IBInspectable
+    public var progress: Float = 0.0
+    {
+        willSet
+        {
+            self.progress = max(min(newValue, 1.0), 0.0)
+        }
+        didSet
+        {
+            self.progressCircle.strokeEnd = CGFloat(self.progress)
+        }
+    }
+
+    @IBInspectable
+    public var strokeDynamic: Bool = true
+    {
+        didSet
+        {
+            self.updateStrokeWidth()
+        }
+    }
+
+    @IBInspectable
+    public var strokeWidth: CGFloat = 3.0
+    {
+        willSet
+        {
+            self.strokeWidth = max(min(newValue, self.frame.height / 2.0, self.frame.width / 2.0), 0.0)
+        }
+
+        didSet
+        {
+            self.strokeDynamic = false
+            self.updateStrokeWidth()
+        }
+    }
+
+    @IBInspectable
+    public var colorSuccess: UIColor = UIColor.green
+    {
+        didSet { self.updateStatusColor() }
+    }
+
+    @IBInspectable
+    public var colorPaused: UIColor = UIColor.lightGray
+    {
+        didSet { self.updateStatusColor() }
+    }
+
+    @IBInspectable
+    public var colorCanceled: UIColor = UIColor.red
+    {
+        didSet { self.updateStatusColor() }
+    }
+
+    public override func tintColorDidChange()
+    {
+        self.updateStatusColor()
+    }
+
+    private func getCirclePath(for newStrokeWidth: CGFloat) -> CGPath
+    {
+        let strokeDiff: CGFloat = newStrokeWidth > 1.0 ? ((newStrokeWidth - 1.0) / 2.0) : 0.0
+        let maxFrameSize = self.maxFrameSize - (2.0 * strokeDiff)
+        let frame = CGRect(x: strokeDiff, y: strokeDiff, width: maxFrameSize, height: maxFrameSize)
+        let circlePath = UIBezierPath(roundedRect: frame, cornerRadius: maxFrameSize > 0 ? (maxFrameSize / 2.0) : 0.0)
+        return circlePath.cgPath
+    }
+
+    private func setup()
+    {
+        self.progressCircle.strokeStart = 0
+        self.progressCircle.fillColor = nil
+
+        self.backgroundCircle.strokeStart = 0
+        self.backgroundCircle.strokeEnd = 1.0
+        self.backgroundCircle.fillColor = nil
+
+        self.update()
+    }
+
+    public override func prepareForInterfaceBuilder()
+    {
+        super.prepareForInterfaceBuilder()
+        self.setup()
+    }
+
+    public override func layoutSubviews()
+    {
+        super.layoutSubviews()
+        self.update()
+    }
+
+    private func update()
+    {
+        self.progressCircle.strokeEnd = CGFloat(self.progress)
+
+        self.updateStatusColor()
+        self.updateStrokeWidth()
+    }
+
+    private func updateStrokeWidth()
+    {
+        let actualStrokeWidth = self.strokeDynamic ? (max(1.0, self.maxFrameSize) / 8.0) : self.strokeWidth
+
+        self.progressCircle.path = self.getCirclePath(for: actualStrokeWidth)
+        self.progressCircle.lineWidth = actualStrokeWidth
+
+        let backgroundStrokeWidth = actualStrokeWidth > 0 ? ceil(actualStrokeWidth / 10.0) : 0.0
+        self.backgroundCircle.path = self.getCirclePath(for: backgroundStrokeWidth)
+        self.backgroundCircle.lineWidth = backgroundStrokeWidth
+    }
+
+    private func updateStatusColor()
     {
         switch self.status {
             case .remote:
-                self.progressCircle.strokeColor = self.pauseColor.cgColor
+                self.progressCircle.strokeColor = self.colorPaused.cgColor
                 self.backgroundCircle.strokeColor = self.tintColor.cgColor
 
             case .downloading, .resumed:
@@ -117,48 +191,16 @@ public class UICircleProgressView: UIView
                 self.backgroundCircle.strokeColor = self.tintColor.cgColor
 
             case .success:
-                self.progressCircle.strokeColor = self.successColor.cgColor
-                self.backgroundCircle.strokeColor = self.successColor.cgColor
+                self.progressCircle.strokeColor = self.colorSuccess.cgColor
+                self.backgroundCircle.strokeColor = self.colorSuccess.cgColor
 
             case .paused, .waiting:
-                self.progressCircle.strokeColor = self.pauseColor.cgColor
-                self.backgroundCircle.strokeColor = self.pauseColor.cgColor
+                self.progressCircle.strokeColor = self.colorPaused.cgColor
+                self.backgroundCircle.strokeColor = self.colorPaused.cgColor
 
             case .canceled:
-                self.progressCircle.strokeColor = self.cancelColor.cgColor
-                self.backgroundCircle.strokeColor = self.cancelColor.cgColor
+                self.progressCircle.strokeColor = self.colorCanceled.cgColor
+                self.backgroundCircle.strokeColor = self.colorCanceled.cgColor
         }
-    }
-
-    private func getCirclePath(for newStrokeWidth: CGFloat) -> CGPath
-    {
-        let strokeDiff: CGFloat = (newStrokeWidth - 1.0) / 2.0
-        let maxFrameSize = min(self.frame.height, self.frame.width) - (2.0 * strokeDiff)
-        let frame = CGRect(x: strokeDiff, y: strokeDiff, width: maxFrameSize, height: maxFrameSize)
-        let circlePath = UIBezierPath(roundedRect: frame, cornerRadius: (maxFrameSize / 2.0))
-        return circlePath.cgPath
-    }
-
-    private func drawCircle()
-    {
-        let circlePath = self.getCirclePath(for: self.strokeWidth)
-        let outerCirclePath = UIBezierPath(roundedRect: CGRect(x: 0.0, y: 0.0, width: self.frame.height, height: self.frame.height), cornerRadius: self.frame.height / 2).cgPath
-
-        self.progressCircle.path = circlePath
-        self.progressCircle.lineWidth = self.strokeWidth
-        self.progressCircle.strokeColor = UIColor.white.cgColor
-        self.progressCircle.strokeStart = 0
-        self.progressCircle.strokeEnd = CGFloat(self.progress)
-        self.progressCircle.fillColor = nil
-
-        self.backgroundCircle.path = outerCirclePath
-        self.backgroundCircle.lineWidth = 1
-        self.backgroundCircle.strokeColor = self.tintColor.cgColor
-        self.backgroundCircle.strokeStart = 0
-        self.backgroundCircle.strokeEnd = 1.0
-        self.backgroundCircle.fillColor = nil
-
-        self.layer.addSublayer(self.progressCircle)
-        self.layer.addSublayer(self.backgroundCircle)
     }
 }
