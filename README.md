@@ -17,8 +17,8 @@ pod 'UICircleProgressView'
 
 ## Usage
 
-User either:
-- the Interface-Build to create a `UIView` and set it's base-class to `UICircleProgressView`
+Use either:
+- the Interface-Builder to create a `UIView` and set it's base-class to `UICircleProgressView`
 - create a UICircleProgressView in source:
 
 ```Swift
