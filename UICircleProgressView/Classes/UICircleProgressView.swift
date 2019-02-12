@@ -66,12 +66,6 @@ public class UICircleProgressView: UIView
         self.setup()
     }
 
-    public convenience init(frame: CGRect, style: StyleType = .old)
-    {
-        self.init(frame: frame)
-        self.type = style
-    }
-
     public required init?(coder: NSCoder)
     {
         super.init(coder: coder)
