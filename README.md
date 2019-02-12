@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/cocoapods/l/UICircleProgressView.svg?style=flat)](https://cocoapods.org/pods/UICircleProgressView)
 [![Platform](https://img.shields.io/cocoapods/p/UICircleProgressView.svg?style=flat)](https://cocoapods.org/pods/UICircleProgressView)
 
-####An slim, AppStore like download-progress circle-indicator view.
+#### An slim, AppStore like download-progress circle-indicator view.
 <small>All graphics are done using only `CAShapeLayer`s with `UIBezierPath`s and are animated with `CAAnimation`. Therefor no additional assets are required, making all aspects fully customizable.</small>
 
 > Preview `old`-Style: <br>
