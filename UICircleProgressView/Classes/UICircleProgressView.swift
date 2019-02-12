@@ -10,13 +10,17 @@ public class UICircleProgressView: UIView
 {
     public enum DownloadStatus: String
     {
-        case remote
-        case downloading
         case paused
-        case resumed
-        case success
         case waiting
+        case downloading
+        case success
         case canceled
+    }
+
+    public enum StyleType
+    {
+        case old
+        case new
     }
 
     private func newCircleLayer() -> CAShapeLayer
@@ -26,12 +30,34 @@ public class UICircleProgressView: UIView
         return shape
     }
 
-    private lazy var progressCircle: CAShapeLayer = self.newCircleLayer()
+    private let rotationAnimation: CAAnimation = {
+        let animation = CABasicAnimation(keyPath: "transform.rotation")
+        animation.fromValue = 0
+        animation.toValue = Double.pi * 2
+        animation.duration = 1.0
+        animation.repeatCount = .infinity
+        return animation
+    }()
+
     private lazy var backgroundCircle: CAShapeLayer = self.newCircleLayer()
+    private lazy var progressCircle: CAShapeLayer = self.newCircleLayer()
 
     private var maxFrameSize: CGFloat
     {
         return min(self.frame.height, self.frame.width)
+    }
+
+    private var actualStrokeWidth: CGFloat
+    {
+        if !self.strokeDynamic
+        {
+            return self.strokeWidth
+        }
+
+        switch self.type {
+            case .old: return max(1.0, self.maxFrameSize) / 8.0
+            case .new: return max(1.0, self.maxFrameSize) / 12.0
+        }
     }
 
     public override init(frame: CGRect)
@@ -40,15 +66,23 @@ public class UICircleProgressView: UIView
         self.setup()
     }
 
+    public convenience init(frame: CGRect, style: StyleType = .old)
+    {
+        self.init(frame: frame)
+        self.type = style
+    }
+
     public required init?(coder: NSCoder)
     {
         super.init(coder: coder)
         self.setup()
     }
 
+    private var isRotating: Bool = false
+
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'status' instead.")
     @IBInspectable
-    public var statusType: String? = "downloading"
+    public var statusType: String? = DownloadStatus.paused.rawValue
     {
         willSet
         {
@@ -61,9 +95,24 @@ public class UICircleProgressView: UIView
         }
     }
 
-    public var status: DownloadStatus = .remote
+    public var status: DownloadStatus = .paused
     {
-        didSet { self.updateStatusColor() }
+        didSet { self.updateStatus() }
+    }
+
+    @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'type' instead.")
+    @IBInspectable
+    public var oldStyleType: Bool = true
+    {
+        willSet
+        {
+            self.type = newValue ? .old : .new
+        }
+    }
+
+    public var type: StyleType = .old
+    {
+        didSet { self.update() }
     }
 
     @IBInspectable
@@ -75,7 +124,7 @@ public class UICircleProgressView: UIView
         }
         didSet
         {
-            self.progressCircle.strokeEnd = CGFloat(self.progress)
+            self.updateProgress()
         }
     }
 
@@ -106,24 +155,24 @@ public class UICircleProgressView: UIView
     @IBInspectable
     public var colorSuccess: UIColor = UIColor.green
     {
-        didSet { self.updateStatusColor() }
+        didSet { self.updateStatus() }
     }
 
     @IBInspectable
     public var colorPaused: UIColor = UIColor.lightGray
     {
-        didSet { self.updateStatusColor() }
+        didSet { self.updateStatus() }
     }
 
     @IBInspectable
     public var colorCanceled: UIColor = UIColor.red
     {
-        didSet { self.updateStatusColor() }
+        didSet { self.updateStatus() }
     }
 
     public override func tintColorDidChange()
     {
-        self.updateStatusColor()
+        self.updateStatus()
     }
 
     private func getCirclePath(for newStrokeWidth: CGFloat) -> CGPath
@@ -137,10 +186,10 @@ public class UICircleProgressView: UIView
 
     private func setup()
     {
-        self.progressCircle.strokeStart = 0
+        self.progressCircle.strokeStart = 0.0
         self.progressCircle.fillColor = nil
 
-        self.backgroundCircle.strokeStart = 0
+        self.backgroundCircle.strokeStart = 0.0
         self.backgroundCircle.strokeEnd = 1.0
         self.backgroundCircle.fillColor = nil
 
@@ -163,30 +212,61 @@ public class UICircleProgressView: UIView
     {
         self.progressCircle.strokeEnd = CGFloat(self.progress)
 
-        self.updateStatusColor()
+        self.progressCircle.frame = CGRect(x: 0, y: 0, width: self.maxFrameSize, height: self.maxFrameSize)
+        self.backgroundCircle.frame = CGRect(x: 0, y: 0, width: self.maxFrameSize, height: self.maxFrameSize)
+
+        self.updateStatus()
         self.updateStrokeWidth()
     }
 
     private func updateStrokeWidth()
     {
-        let actualStrokeWidth = self.strokeDynamic ? (max(1.0, self.maxFrameSize) / 8.0) : self.strokeWidth
+        switch self.type {
+            case .old:
+                self.progressCircle.path = self.getCirclePath(for: self.actualStrokeWidth)
+                self.progressCircle.lineWidth = self.actualStrokeWidth
 
-        self.progressCircle.path = self.getCirclePath(for: actualStrokeWidth)
-        self.progressCircle.lineWidth = actualStrokeWidth
+                let backgroundStrokeWidth = self.actualStrokeWidth > 0 ? ceil(self.actualStrokeWidth / 10.0) : 0.0
+                self.backgroundCircle.path = self.getCirclePath(for: backgroundStrokeWidth)
+                self.backgroundCircle.lineWidth = backgroundStrokeWidth
 
-        let backgroundStrokeWidth = actualStrokeWidth > 0 ? ceil(actualStrokeWidth / 10.0) : 0.0
-        self.backgroundCircle.path = self.getCirclePath(for: backgroundStrokeWidth)
-        self.backgroundCircle.lineWidth = backgroundStrokeWidth
+            case .new:
+                self.progressCircle.path = self.getCirclePath(for: self.actualStrokeWidth)
+                self.progressCircle.lineWidth = self.actualStrokeWidth
+
+                self.backgroundCircle.path = self.getCirclePath(for: self.actualStrokeWidth)
+                self.backgroundCircle.lineWidth = self.actualStrokeWidth
+        }
     }
 
-    private func updateStatusColor()
+    private func updateProgress()
+    {
+        self.progressCircle.strokeEnd = CGFloat(self.progress)
+
+        switch self.type {
+            case .old: self.backgroundCircle.strokeStart = 0.0
+            case .new: if !self.isRotating { self.backgroundCircle.strokeStart = CGFloat(self.progress) }
+        }
+    }
+
+    private func updateStatus()
+    {
+        switch self.type {
+            case .old:
+                self.updateStatusOld()
+            case .new:
+                self.updateStatusNew()
+        }
+    }
+
+    private func updateStatusOld()
     {
         switch self.status {
-            case .remote:
+            case .paused, .waiting:
                 self.progressCircle.strokeColor = self.colorPaused.cgColor
-                self.backgroundCircle.strokeColor = self.tintColor.cgColor
+                self.backgroundCircle.strokeColor = self.colorPaused.cgColor
 
-            case .downloading, .resumed:
+            case .downloading:
                 self.progressCircle.strokeColor = self.tintColor.cgColor
                 self.backgroundCircle.strokeColor = self.tintColor.cgColor
 
@@ -194,13 +274,55 @@ public class UICircleProgressView: UIView
                 self.progressCircle.strokeColor = self.colorSuccess.cgColor
                 self.backgroundCircle.strokeColor = self.colorSuccess.cgColor
 
-            case .paused, .waiting:
-                self.progressCircle.strokeColor = self.colorPaused.cgColor
+            case .canceled:
+                self.progressCircle.strokeColor = self.colorCanceled.cgColor
+                self.backgroundCircle.strokeColor = self.colorCanceled.cgColor
+        }
+    }
+
+    private func updateStatusNew()
+    {
+        switch self.status {
+            case .waiting:
+                self.progressCircle.strokeColor = self.tintColor.cgColor
                 self.backgroundCircle.strokeColor = self.colorPaused.cgColor
+
+                if !self.isRotating
+                {
+                    self.backgroundCircle.strokeStart = 0.15
+                    self.backgroundCircle.add(self.rotationAnimation, forKey: "transform.rotation")
+                    self.isRotating = true
+                }
+
+            case .downloading, .paused:
+                self.progressCircle.strokeColor = self.tintColor.cgColor
+                self.backgroundCircle.strokeColor = self.colorPaused.cgColor
+                self.backgroundCircle.strokeStart = CGFloat(self.progress)
+                if self.isRotating
+                {
+                    self.backgroundCircle.removeAllAnimations()
+                    self.isRotating = false
+                }
+
+            case .success:
+                self.progressCircle.strokeColor = self.colorSuccess.cgColor
+                self.backgroundCircle.strokeColor = self.colorSuccess.cgColor
+                self.backgroundCircle.strokeStart = CGFloat(self.progress)
+                if self.isRotating
+                {
+                    self.backgroundCircle.removeAllAnimations()
+                    self.isRotating = false
+                }
 
             case .canceled:
                 self.progressCircle.strokeColor = self.colorCanceled.cgColor
                 self.backgroundCircle.strokeColor = self.colorCanceled.cgColor
+                self.backgroundCircle.strokeStart = CGFloat(self.progress)
+                if self.isRotating
+                {
+                    self.backgroundCircle.removeAllAnimations()
+                    self.isRotating = false
+                }
         }
     }
 }

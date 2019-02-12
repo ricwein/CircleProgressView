@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="ipad9_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rYJ-cb-EZC" customClass="UICircleProgressView" customModule="example" customModuleProvider="target">
+                                <rect key="frame" x="8" y="28" width="752" height="752"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="rYJ-cb-EZC" secondAttribute="height" multiplier="1:1" id="6Gg-aX-AhN"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                        <real key="value" value="0.69999999999999996"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="strokeDynamic" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="statusType" value="downloading"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="oldStyleType" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BA6-ev-snO">
+                                <rect key="frame" x="347" y="974" width="74" height="30"/>
+                                <state key="normal" title="progress..."/>
+                                <connections>
+                                    <action selector="progress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ScM-Zf-eYp"/>
+                                </connections>
+                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Mvy-VD-AH3">
+                                <rect key="frame" x="8" y="938" width="151" height="29"/>
+                                <segments>
+                                    <segment title="Old Style"/>
+                                    <segment title="New Style"/>
+                                </segments>
+                                <connections>
+                                    <action selector="toggleStyleType:" destination="BYZ-38-t0r" eventType="valueChanged" id="KBO-bb-z4Z"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="rYJ-cb-EZC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="KXm-6L-yP8"/>
+                            <constraint firstItem="BA6-ev-snO" firstAttribute="top" secondItem="Mvy-VD-AH3" secondAttribute="bottom" constant="8" id="Myx-VM-SFC"/>
+                            <constraint firstItem="Mvy-VD-AH3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="PHj-67-4Q9"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BA6-ev-snO" secondAttribute="bottom" constant="20" id="Xru-L5-0mo"/>
+                            <constraint firstItem="rYJ-cb-EZC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="azn-qe-dCc"/>
+                            <constraint firstItem="BA6-ev-snO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zZJ-9l-PS3"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rYJ-cb-EZC" secondAttribute="trailing" constant="8" id="zho-zg-icG"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="progressView" destination="rYJ-cb-EZC" id="OIc-ik-mGt"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+        </scene>
+    </scenes>
+</document>
