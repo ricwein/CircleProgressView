@@ -27,7 +27,7 @@ class ViewController: UIViewController
 
     @IBAction func toggleStyleType(_ sender: UISegmentedControl)
     {
-        self.progressView.type = sender.selectedSegmentIndex == 0 ? .old : .new
+        self.progressView.style = sender.selectedSegmentIndex == 0 ? .old : .new
     }
 
     private func simulateDownload()

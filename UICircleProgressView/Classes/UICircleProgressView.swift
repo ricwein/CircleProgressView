@@ -23,13 +23,6 @@ public class UICircleProgressView: UIView
         case new
     }
 
-    private func newCircleLayer() -> CAShapeLayer
-    {
-        let shape = CAShapeLayer()
-        self.layer.addSublayer(shape)
-        return shape
-    }
-
     private let rotationAnimation: CAAnimation = {
         let animation = CABasicAnimation(keyPath: "transform.rotation")
         animation.fromValue = 0
@@ -39,14 +32,23 @@ public class UICircleProgressView: UIView
         return animation
     }()
 
-    private lazy var backgroundCircle: CAShapeLayer = self.newCircleLayer()
-    private lazy var progressCircle: CAShapeLayer = self.newCircleLayer()
+    private var backgroundCircle: CAShapeLayer = CAShapeLayer()
+    private var progressCircle: CAShapeLayer = CAShapeLayer()
 
+    /// keep track if our class is already fully setup
+    /// if not, we don't have to adapt all property-changes directly
+    private var hasInitFinished: Bool = false
+
+    /// do we currently rotate-animate our background-circle?
+    private var isRotating: Bool = false
+
+    /// actual max squared size of our frame for a perfect circle
     private var maxFrameSize: CGFloat
     {
         return min(self.frame.height, self.frame.width)
     }
 
+    /// which strokeWidth should be used?
     private var actualStrokeWidth: CGFloat
     {
         if !self.strokeDynamic
@@ -54,25 +56,44 @@ public class UICircleProgressView: UIView
             return self.strokeWidth
         }
 
-        switch self.type {
+        switch self.style {
             case .old: return max(1.0, self.maxFrameSize) / 8.0
             case .new: return max(1.0, self.maxFrameSize) / 12.0
         }
     }
 
+    /// default initializer
     public override init(frame: CGRect)
     {
         super.init(frame: frame)
         self.setup()
     }
 
+    /// required default initializer
     public required init?(coder: NSCoder)
     {
         super.init(coder: coder)
         self.setup()
     }
 
-    private var isRotating: Bool = false
+    /// custom initializer with support for multiple default-properties
+    public init(frame: CGRect, style: StyleType = .old, status: DownloadStatus = .paused, progress: Float = 0.0)
+    {
+        super.init(frame: frame)
+
+        self.style = style
+        self.status = status
+        self.progress = max(min(progress, 1.0), 0.0)
+
+        self.setup()
+    }
+
+    /// ensures correct interfacebuilder support with live-preview
+    public override func prepareForInterfaceBuilder()
+    {
+        super.prepareForInterfaceBuilder()
+        self.setup()
+    }
 
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'status' instead.")
     @IBInspectable
@@ -89,26 +110,29 @@ public class UICircleProgressView: UIView
         }
     }
 
+    /// set the current download-state
     public var status: DownloadStatus = .paused
     {
-        didSet { self.updateStatus() }
+        didSet { if self.hasInitFinished { self.updateStatus() } }
     }
 
     @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'type' instead.")
     @IBInspectable
-    public var oldStyleType: Bool = true
+    public var useNewStyle: Bool = false
     {
         willSet
         {
-            self.type = newValue ? .old : .new
+            self.style = newValue ? .new : .old
         }
     }
 
-    public var type: StyleType = .old
+    /// set which UI-style should be used, old or new?
+    public var style: StyleType = .old
     {
-        didSet { self.update() }
+        didSet { if self.hasInitFinished { self.update() } }
     }
 
+    /// set the current progress (between 0.0 and 1.0)
     @IBInspectable
     public var progress: Float = 0.0
     {
@@ -118,19 +142,18 @@ public class UICircleProgressView: UIView
         }
         didSet
         {
-            self.updateProgress()
+            if self.hasInitFinished { self.updateProgress() }
         }
     }
 
+    /// ignore explicit setted strokeWidth and use a dynamically calculated instead?
     @IBInspectable
     public var strokeDynamic: Bool = true
     {
-        didSet
-        {
-            self.updateStrokeWidth()
-        }
+        didSet { if self.hasInitFinished { self.updateStrokeWidth() } }
     }
 
+    /// set an explicit strokeWidth
     @IBInspectable
     public var strokeWidth: CGFloat = 3.0
     {
@@ -142,31 +165,31 @@ public class UICircleProgressView: UIView
         didSet
         {
             self.strokeDynamic = false
-            self.updateStrokeWidth()
+            if self.hasInitFinished { self.updateStrokeWidth() }
         }
     }
 
     @IBInspectable
     public var colorSuccess: UIColor = UIColor.green
     {
-        didSet { self.updateStatus() }
+        didSet { if self.hasInitFinished { self.updateStatus() } }
     }
 
     @IBInspectable
     public var colorPaused: UIColor = UIColor.lightGray
     {
-        didSet { self.updateStatus() }
+        didSet { if self.hasInitFinished { self.updateStatus() } }
     }
 
     @IBInspectable
     public var colorCanceled: UIColor = UIColor.red
     {
-        didSet { self.updateStatus() }
+        didSet { if self.hasInitFinished { self.updateStatus() } }
     }
 
     public override func tintColorDidChange()
     {
-        self.updateStatus()
+        if self.hasInitFinished { self.updateStatus() }
     }
 
     private func getCirclePath(for newStrokeWidth: CGFloat) -> CGPath
@@ -180,6 +203,9 @@ public class UICircleProgressView: UIView
 
     private func setup()
     {
+        self.layer.addSublayer(self.backgroundCircle)
+        self.layer.addSublayer(self.progressCircle)
+
         self.progressCircle.strokeStart = 0.0
         self.progressCircle.fillColor = nil
 
@@ -188,12 +214,7 @@ public class UICircleProgressView: UIView
         self.backgroundCircle.fillColor = nil
 
         self.update()
-    }
-
-    public override func prepareForInterfaceBuilder()
-    {
-        super.prepareForInterfaceBuilder()
-        self.setup()
+        self.hasInitFinished = true
     }
 
     public override func layoutSubviews()
@@ -210,12 +231,13 @@ public class UICircleProgressView: UIView
         self.backgroundCircle.frame = CGRect(x: 0, y: 0, width: self.maxFrameSize, height: self.maxFrameSize)
 
         self.updateStatus()
+        self.updateProgress()
         self.updateStrokeWidth()
     }
 
     private func updateStrokeWidth()
     {
-        switch self.type {
+        switch self.style {
             case .old:
                 self.progressCircle.path = self.getCirclePath(for: self.actualStrokeWidth)
                 self.progressCircle.lineWidth = self.actualStrokeWidth
@@ -237,7 +259,7 @@ public class UICircleProgressView: UIView
     {
         self.progressCircle.strokeEnd = CGFloat(self.progress)
 
-        switch self.type {
+        switch self.style {
             case .old: self.backgroundCircle.strokeStart = 0.0
             case .new: if !self.isRotating { self.backgroundCircle.strokeStart = CGFloat(self.progress) }
         }
@@ -245,11 +267,9 @@ public class UICircleProgressView: UIView
 
     private func updateStatus()
     {
-        switch self.type {
-            case .old:
-                self.updateStatusOld()
-            case .new:
-                self.updateStatusNew()
+        switch self.style {
+            case .old: self.updateStatusOld()
+            case .new: self.updateStatusNew()
         }
     }
 

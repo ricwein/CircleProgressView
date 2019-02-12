@@ -32,10 +32,8 @@ Use either:
 ```swift
 import UICircleProgressView
 
-let progressView = UICircleProgressView(frame: CGRect(x: 0, y: 0, width: 24, height: 24))
+let progressView = UICircleProgressView(frame: CGRect(x: 0, y: 0, width: 24, height: 24), style: .new, status: .waiting)
 progressView.tintColor = .blue
-progressView.status = .waiting
-progressView.progress = 0.0
 
 // starting download...
 progressView.status = .downloading
@@ -56,7 +54,7 @@ The following properties are exposed to customize and controll the progressView:
 | property | behavior | type / values |
 |--:|:--|:--|
 | `status` | the current progess-state | `enum`: `DownloadStatus`<br>\[`.paused`,`.waiting`,<br>`.downloading`,`.success`,<br>`.canceled`\] |
-| `type` | the UI-style of the progressView | `enum`: `StyleType`<br>\[`.old`,`.new`\] |
+| `style` | the UI-style of the progressView | `enum`: `StyleType`<br>\[`.old`,`.new`\] |
 | `progress` | the current progress | `Float` (`0.0` - `1.0`) |
 | `strokeWidth` | explicitly set the progress-circle stroke width | `CGFloat` |
 | `strokeDynamic` | use either: the explicit `strokeWidth` value for the progress-circle stroke, or calculate it dynamically | `Bool` |
