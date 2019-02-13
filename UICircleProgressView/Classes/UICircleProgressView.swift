@@ -335,6 +335,19 @@ public class UICircleProgressView: UIView
         }
     }
 
+    public override func didMoveToSuperview()
+    {
+        super.didMoveToSuperview()
+
+        guard self.isRotating else
+        {
+            return
+        }
+
+        self.backgroundCircle.removeAllAnimations()
+        self.backgroundCircle.add(self.rotationAnimation, forKey: "transform.rotation")
+    }
+
     /// Tries to start the waiting-rotation-animation.
     /// This is normally automatically managed be the current status.
     public func startAnimating()
