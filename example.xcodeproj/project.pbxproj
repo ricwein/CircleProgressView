@@ -13,6 +13,8 @@
 		002E64132212D0A90050B2F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 002E64122212D0A90050B2F5 /* Assets.xcassets */; };
 		002E64162212D0A90050B2F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 002E64142212D0A90050B2F5 /* LaunchScreen.storyboard */; };
 		004AA3292212FE010081A423 /* UICircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004AA3282212FE010081A423 /* UICircleProgressView.swift */; };
+		00B6160B22143F1900056477 /* UICircleProgressView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 00B6160A22143F1900056477 /* UICircleProgressView.podspec */; };
+		00B6160D22143F2100056477 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 00B6160C22143F2100056477 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -24,6 +26,8 @@
 		002E64152212D0A90050B2F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		002E64172212D0A90050B2F5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		004AA3282212FE010081A423 /* UICircleProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UICircleProgressView.swift; path = UICircleProgressView/Classes/UICircleProgressView.swift; sourceTree = SOURCE_ROOT; };
+		00B6160A22143F1900056477 /* UICircleProgressView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UICircleProgressView.podspec; sourceTree = SOURCE_ROOT; };
+		00B6160C22143F2100056477 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -63,6 +67,7 @@
 				002E64142212D0A90050B2F5 /* LaunchScreen.storyboard */,
 				002E64172212D0A90050B2F5 /* Info.plist */,
 				002E641F2212D0D20050B2F5 /* Source */,
+				00B6160E22143F4400056477 /* Pod */,
 			);
 			path = example;
 			sourceTree = "<group>";
@@ -73,6 +78,15 @@
 				004AA3282212FE010081A423 /* UICircleProgressView.swift */,
 			);
 			name = Source;
+			sourceTree = "<group>";
+		};
+		00B6160E22143F4400056477 /* Pod */ = {
+			isa = PBXGroup;
+			children = (
+				00B6160C22143F2100056477 /* README.md */,
+				00B6160A22143F1900056477 /* UICircleProgressView.podspec */,
+			);
+			name = Pod;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,7 +124,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 002E64032212D0A80050B2F5 /* Build configuration list for PBXProject "_" */;
+			buildConfigurationList = 002E64032212D0A80050B2F5 /* Build configuration list for PBXProject "example" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -133,7 +147,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00B6160B22143F1900056477 /* UICircleProgressView.podspec in Resources */,
 				002E64162212D0A90050B2F5 /* LaunchScreen.storyboard in Resources */,
+				00B6160D22143F2100056477 /* README.md in Resources */,
 				002E64132212D0A90050B2F5 /* Assets.xcassets in Resources */,
 				002E64112212D0A80050B2F5 /* Main.storyboard in Resources */,
 			);
@@ -327,7 +343,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		002E64032212D0A80050B2F5 /* Build configuration list for PBXProject "_" */ = {
+		002E64032212D0A80050B2F5 /* Build configuration list for PBXProject "example" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				002E64182212D0A90050B2F5 /* Debug */,

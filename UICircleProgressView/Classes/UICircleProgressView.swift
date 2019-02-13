@@ -29,6 +29,7 @@ public class UICircleProgressView: UIView
         animation.toValue = Double.pi * 2
         animation.duration = 1.0
         animation.repeatCount = .infinity
+        animation.isRemovedOnCompletion = false
         return animation
     }()
 
@@ -129,7 +130,19 @@ public class UICircleProgressView: UIView
     /// set which UI-style should be used, old or new?
     public var style: StyleType = .old
     {
-        didSet { if self.hasInitFinished { self.update() } }
+        didSet
+        {
+            if self.style == .old, self.isRotating
+            {
+                self.stopAnimating()
+            }
+            else if self.style == .new, self.status == .waiting, !self.isRotating
+            {
+                self.startAnimating()
+            }
+
+            if self.hasInitFinished { self.update() }
+        }
     }
 
     /// set the current progress (between 0.0 and 1.0)
@@ -300,43 +313,48 @@ public class UICircleProgressView: UIView
             case .waiting:
                 self.progressCircle.strokeColor = self.tintColor.cgColor
                 self.backgroundCircle.strokeColor = self.colorPaused.cgColor
-
-                if !self.isRotating
-                {
-                    self.backgroundCircle.strokeStart = 0.15
-                    self.backgroundCircle.add(self.rotationAnimation, forKey: "transform.rotation")
-                    self.isRotating = true
-                }
+                self.startAnimating()
 
             case .downloading, .paused:
                 self.progressCircle.strokeColor = self.tintColor.cgColor
                 self.backgroundCircle.strokeColor = self.colorPaused.cgColor
                 self.backgroundCircle.strokeStart = CGFloat(self.progress)
-                if self.isRotating
-                {
-                    self.backgroundCircle.removeAllAnimations()
-                    self.isRotating = false
-                }
+                self.stopAnimating()
 
             case .success:
                 self.progressCircle.strokeColor = self.colorSuccess.cgColor
                 self.backgroundCircle.strokeColor = self.colorSuccess.cgColor
                 self.backgroundCircle.strokeStart = CGFloat(self.progress)
-                if self.isRotating
-                {
-                    self.backgroundCircle.removeAllAnimations()
-                    self.isRotating = false
-                }
+                self.stopAnimating()
 
             case .canceled:
                 self.progressCircle.strokeColor = self.colorCanceled.cgColor
                 self.backgroundCircle.strokeColor = self.colorCanceled.cgColor
                 self.backgroundCircle.strokeStart = CGFloat(self.progress)
-                if self.isRotating
-                {
-                    self.backgroundCircle.removeAllAnimations()
-                    self.isRotating = false
-                }
+                self.stopAnimating()
+        }
+    }
+
+    /// Tries to start the waiting-rotation-animation.
+    /// This is normally automatically managed be the current status.
+    public func startAnimating()
+    {
+        if !self.isRotating
+        {
+            self.backgroundCircle.strokeStart = 0.15
+            self.backgroundCircle.add(self.rotationAnimation, forKey: "transform.rotation")
+            self.isRotating = true
+        }
+    }
+
+    /// Tries to stop the waiting-rotation-animation.
+    /// This is normally automatically managed be the current status.
+    public func stopAnimating()
+    {
+        if self.isRotating
+        {
+            self.backgroundCircle.removeAllAnimations()
+            self.isRotating = false
         }
     }
 }
