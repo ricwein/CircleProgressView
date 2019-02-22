@@ -121,10 +121,7 @@ public class UICircleProgressView: UIView
     @IBInspectable
     public var useNewStyle: Bool = false
     {
-        willSet
-        {
-            self.style = newValue ? .new : .old
-        }
+        willSet { self.style = newValue ? .new : .old }
     }
 
     /// set which UI-style should be used, old or new?
@@ -149,14 +146,8 @@ public class UICircleProgressView: UIView
     @IBInspectable
     public var progress: Float = 0.0
     {
-        willSet
-        {
-            self.progress = max(min(newValue, 1.0), 0.0)
-        }
-        didSet
-        {
-            if self.hasInitFinished { self.updateProgress() }
-        }
+        willSet { self.progress = max(min(newValue, 1.0), 0.0) }
+        didSet { if self.hasInitFinished { self.updateProgress() } }
     }
 
     /// ignore explicit setted strokeWidth and use a dynamically calculated instead?

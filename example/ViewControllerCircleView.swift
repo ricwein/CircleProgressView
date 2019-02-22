@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  ViewControllerCircleView.swift
 //  example
 //
 //  Created by Richard Weinhold on 12.02.19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController
+class ViewControllerCircleView: UIViewController
 {
     @IBOutlet var progressView: UICircleProgressView!
 

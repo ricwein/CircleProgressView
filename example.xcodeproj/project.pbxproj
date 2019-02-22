@@ -8,19 +8,21 @@
 
 /* Begin PBXBuildFile section */
 		002E640C2212D0A80050B2F5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E640B2212D0A80050B2F5 /* AppDelegate.swift */; };
-		002E640E2212D0A80050B2F5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E640D2212D0A80050B2F5 /* ViewController.swift */; };
+		002E640E2212D0A80050B2F5 /* ViewControllerCircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 002E640D2212D0A80050B2F5 /* ViewControllerCircleView.swift */; };
 		002E64112212D0A80050B2F5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 002E640F2212D0A80050B2F5 /* Main.storyboard */; };
 		002E64132212D0A90050B2F5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 002E64122212D0A90050B2F5 /* Assets.xcassets */; };
 		002E64162212D0A90050B2F5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 002E64142212D0A90050B2F5 /* LaunchScreen.storyboard */; };
 		004AA3292212FE010081A423 /* UICircleProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 004AA3282212FE010081A423 /* UICircleProgressView.swift */; };
 		00B6160B22143F1900056477 /* UICircleProgressView.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 00B6160A22143F1900056477 /* UICircleProgressView.podspec */; };
 		00B6160D22143F2100056477 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 00B6160C22143F2100056477 /* README.md */; };
+		00D47C032220242000FC12DD /* UICircleProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D47C022220242000FC12DD /* UICircleProgressButton.swift */; };
+		00D47C05222027FF00FC12DD /* ViewControllerCircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00D47C04222027FF00FC12DD /* ViewControllerCircleButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		002E64082212D0A80050B2F5 /* example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		002E640B2212D0A80050B2F5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		002E640D2212D0A80050B2F5 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		002E640D2212D0A80050B2F5 /* ViewControllerCircleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerCircleView.swift; sourceTree = "<group>"; };
 		002E64102212D0A80050B2F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		002E64122212D0A90050B2F5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		002E64152212D0A90050B2F5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -28,6 +30,8 @@
 		004AA3282212FE010081A423 /* UICircleProgressView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UICircleProgressView.swift; path = UICircleProgressView/Classes/UICircleProgressView.swift; sourceTree = SOURCE_ROOT; };
 		00B6160A22143F1900056477 /* UICircleProgressView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UICircleProgressView.podspec; sourceTree = SOURCE_ROOT; };
 		00B6160C22143F2100056477 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = SOURCE_ROOT; };
+		00D47C022220242000FC12DD /* UICircleProgressButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UICircleProgressButton.swift; path = UICircleProgressView/Classes/UICircleProgressButton.swift; sourceTree = SOURCE_ROOT; };
+		00D47C04222027FF00FC12DD /* ViewControllerCircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerCircleButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,8 +65,9 @@
 			isa = PBXGroup;
 			children = (
 				002E640B2212D0A80050B2F5 /* AppDelegate.swift */,
-				002E640D2212D0A80050B2F5 /* ViewController.swift */,
 				002E640F2212D0A80050B2F5 /* Main.storyboard */,
+				002E640D2212D0A80050B2F5 /* ViewControllerCircleView.swift */,
+				00D47C04222027FF00FC12DD /* ViewControllerCircleButton.swift */,
 				002E64122212D0A90050B2F5 /* Assets.xcassets */,
 				002E64142212D0A90050B2F5 /* LaunchScreen.storyboard */,
 				002E64172212D0A90050B2F5 /* Info.plist */,
@@ -76,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				004AA3282212FE010081A423 /* UICircleProgressView.swift */,
+				00D47C022220242000FC12DD /* UICircleProgressButton.swift */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -162,9 +168,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00D47C032220242000FC12DD /* UICircleProgressButton.swift in Sources */,
 				004AA3292212FE010081A423 /* UICircleProgressView.swift in Sources */,
-				002E640E2212D0A80050B2F5 /* ViewController.swift in Sources */,
+				002E640E2212D0A80050B2F5 /* ViewControllerCircleView.swift in Sources */,
 				002E640C2212D0A80050B2F5 /* AppDelegate.swift in Sources */,
+				00D47C05222027FF00FC12DD /* ViewControllerCircleButton.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

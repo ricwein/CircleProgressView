@@ -10,10 +10,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--View Controller Circle View-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="example" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewControllerCircleView" customModule="example" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -50,14 +50,24 @@
                                     <action selector="toggleStyleType:" destination="BYZ-38-t0r" eventType="valueChanged" id="KBO-bb-z4Z"/>
                                 </connections>
                             </segmentedControl>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vMr-ps-aUY">
+                                <rect key="frame" x="714" y="974" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <segue destination="qTb-lG-UKX" kind="show" id="r2c-zH-tsK"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="vMr-ps-aUY" secondAttribute="trailing" constant="8" id="CkO-FH-7Pc"/>
                             <constraint firstItem="rYJ-cb-EZC" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="KXm-6L-yP8"/>
                             <constraint firstItem="BA6-ev-snO" firstAttribute="top" secondItem="Mvy-VD-AH3" secondAttribute="bottom" constant="8" id="Myx-VM-SFC"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Mvy-VD-AH3" secondAttribute="trailing" symbolic="YES" id="NE8-aM-3Os"/>
                             <constraint firstItem="Mvy-VD-AH3" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="PHj-67-4Q9"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="BA6-ev-snO" secondAttribute="bottom" constant="20" id="Xru-L5-0mo"/>
                             <constraint firstItem="rYJ-cb-EZC" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="azn-qe-dCc"/>
+                            <constraint firstItem="vMr-ps-aUY" firstAttribute="top" secondItem="BA6-ev-snO" secondAttribute="top" id="eup-m9-v5h"/>
                             <constraint firstItem="BA6-ev-snO" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zZJ-9l-PS3"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="rYJ-cb-EZC" secondAttribute="trailing" constant="8" id="zho-zg-icG"/>
                         </constraints>
@@ -69,6 +79,72 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+        </scene>
+        <!--View Controller Circle Button-->
+        <scene sceneID="rdL-ll-Yg8">
+            <objects>
+                <viewController id="qTb-lG-UKX" customClass="ViewControllerCircleButton" customModule="example" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="pVA-ak-gNd">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u3t-G5-EzZ" customClass="UICircleProgressButton" customModule="example" customModuleProvider="target">
+                                <rect key="frame" x="8" y="28" width="752" height="752"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="u3t-G5-EzZ" secondAttribute="height" multiplier="1:1" id="vi5-4Q-t7q"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="statusType" value="downloading"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="useNewStyle" value="NO"/>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="strokeDynamic" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="progress">
+                                        <real key="value" value="0.69999999999999996"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonPressed:" destination="qTb-lG-UKX" eventType="touchUpInside" id="oLl-nF-yxU"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="khz-MC-Nnf">
+                                <rect key="frame" x="347" y="974" width="74" height="30"/>
+                                <state key="normal" title="progress..."/>
+                                <connections>
+                                    <action selector="progress:" destination="qTb-lG-UKX" eventType="touchUpInside" id="44l-pD-pVB"/>
+                                    <action selector="progress:" destination="BYZ-38-t0r" eventType="touchUpInside" id="N21-yx-IkX"/>
+                                </connections>
+                            </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Nfq-GH-m6a">
+                                <rect key="frame" x="8" y="938" width="151" height="29"/>
+                                <segments>
+                                    <segment title="Old Style"/>
+                                    <segment title="New Style"/>
+                                </segments>
+                                <connections>
+                                    <action selector="toggleStyleType:" destination="BYZ-38-t0r" eventType="valueChanged" id="0FF-xL-ZQj"/>
+                                    <action selector="toggleStyleType:" destination="qTb-lG-UKX" eventType="valueChanged" id="LUl-0c-elV"/>
+                                </connections>
+                            </segmentedControl>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="u3t-G5-EzZ" firstAttribute="top" secondItem="eEl-GO-BaZ" secondAttribute="top" constant="8" id="2R2-0E-JYP"/>
+                            <constraint firstItem="u3t-G5-EzZ" firstAttribute="leading" secondItem="eEl-GO-BaZ" secondAttribute="leading" constant="8" id="3Lk-EY-i2r"/>
+                            <constraint firstItem="khz-MC-Nnf" firstAttribute="centerX" secondItem="pVA-ak-gNd" secondAttribute="centerX" id="Jad-IF-hi0"/>
+                            <constraint firstItem="eEl-GO-BaZ" firstAttribute="bottom" secondItem="khz-MC-Nnf" secondAttribute="bottom" constant="20" id="cEW-gS-RTz"/>
+                            <constraint firstItem="eEl-GO-BaZ" firstAttribute="trailing" secondItem="u3t-G5-EzZ" secondAttribute="trailing" constant="8" id="iSA-JC-gXU"/>
+                            <constraint firstItem="Nfq-GH-m6a" firstAttribute="leading" secondItem="eEl-GO-BaZ" secondAttribute="leading" constant="8" id="kgB-Va-n6K"/>
+                            <constraint firstItem="eEl-GO-BaZ" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Nfq-GH-m6a" secondAttribute="trailing" symbolic="YES" id="pLI-b6-D3X"/>
+                            <constraint firstItem="khz-MC-Nnf" firstAttribute="top" secondItem="Nfq-GH-m6a" secondAttribute="bottom" constant="8" id="pSS-pr-oBr"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="eEl-GO-BaZ"/>
+                    </view>
+                    <connections>
+                        <outlet property="progressButton" destination="u3t-G5-EzZ" id="IXv-h0-jcQ"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="w4f-sf-zXP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="731" y="639"/>
         </scene>
     </scenes>
 </document>
