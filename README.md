@@ -63,6 +63,18 @@ The following properties are exposed to customize and controll the progressView:
 > All of these properties can also be set in the XCode-Interfacebuilder, thanks to `@IBDesignable`:
 > ![](./images/Xcode_IB.png)
 
+## Button
+
+This library also offers a button-version of the circle-progress to mimic the AppStore download-buttons.
+The usage is mostly identical to the progressView, just use `UICircleProgressButton` instead.
+
+Additionally to the described properties of the progressView, the Button supports:
+
+| property | behavior | type / values |
+|--:|:--|:--|
+| `startImage` | the button imageview which should be shown when the progress is currently stopped | `UIImage?` |
+| `stopImage` | the button imageview which should be shown when the progress is currently downloading/waiting | `UIImage?` |
+
 ## License
 
 CircleProgressView is available under the MIT license. See the LICENSE file for more info.
