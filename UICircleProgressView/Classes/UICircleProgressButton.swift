@@ -15,6 +15,12 @@ public class UICircleProgressButton: UIButton
 
     var progressView: UICircleProgressView
 
+    public override var contentMode: UIView.ContentMode
+    {
+        get { return .center }
+        set { /* do nothing */ }
+    }
+
     /// keep track if our class is already fully setup
     /// if not, we don't have to adapt all property-changes directly
     private var hasInitFinished: Bool = false
@@ -164,6 +170,9 @@ public class UICircleProgressButton: UIButton
         self.progressView.isUserInteractionEnabled = false
         self.progressView.isExclusiveTouch = false
 
+        self.imageView?.contentMode = .scaleAspectFit
+        self.imageEdgeInsets = UIEdgeInsets(top: self.bounds.height / 4.0, left: self.bounds.width / 4.0, bottom: self.bounds.height / 4.0, right: self.bounds.width / 4.0)
+
         self.addSubview(self.progressView)
 
         self.update()
@@ -186,13 +195,14 @@ public class UICircleProgressButton: UIButton
     private func updateStatus()
     {
         switch self.status {
-            case .paused, .waiting:
-                self.imageView?.image = self.startImage
+            case .paused:
+                self.setImage(self.startImage?.withRenderingMode(.alwaysTemplate), for: .normal)
 
-            case .downloading:
-                self.imageView?.image = self.stopImage
+            case .downloading, .waiting:
+                self.setImage(self.stopImage?.withRenderingMode(.alwaysTemplate), for: .normal)
 
-            default: ()
+            default:
+                self.setImage(nil, for: .normal)
         }
     }
 }

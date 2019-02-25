@@ -12,6 +12,7 @@ class ViewControllerCircleButton: UIViewController
 {
     @IBOutlet var progressButton: UICircleProgressButton!
     private var stopDownload: Bool = false
+    private var downloadingRunning: Bool = false
 
     override func viewDidLoad()
     {
@@ -34,6 +35,12 @@ class ViewControllerCircleButton: UIViewController
     private func simulateDownload()
     {
         self.stopDownload = false
+        self.downloadingRunning = true
+
+        defer
+        {
+            self.downloadingRunning = false
+        }
 
         // waiting for download to start
         DispatchQueue.main.sync
@@ -48,7 +55,7 @@ class ViewControllerCircleButton: UIViewController
             {
                 DispatchQueue.main.sync
                 {
-                    self.progressButton.status = .downloading
+                    self.progressButton.status = .paused
                     self.progressButton.progress = 0.0
                 }
                 return
@@ -111,7 +118,13 @@ class ViewControllerCircleButton: UIViewController
 
     @IBAction func buttonPressed(_: UICircleProgressButton)
     {
-        self.stopDownload = !self.stopDownload
-        print("toggled to: \(self.stopDownload)")
+        if !self.downloadingRunning
+        {
+            DispatchQueue.global().async { self.simulateDownload() }
+        }
+        else
+        {
+            self.stopDownload = !self.stopDownload
+        }
     }
 }
