@@ -345,7 +345,7 @@ public class UICircleProgressView: UIView
     {
         if !self.isRotating
         {
-            self.backgroundCircle.strokeStart = 0.15
+            self.backgroundCircle.strokeStart = 0.2
             self.backgroundCircle.add(self.rotationAnimation, forKey: "transform.rotation")
             self.isRotating = true
         }
