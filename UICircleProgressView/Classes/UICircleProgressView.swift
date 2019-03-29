@@ -244,17 +244,21 @@ public class UICircleProgressView: UIView
         switch self.style {
             case .old:
                 self.progressCircle.path = self.getCirclePath(for: self.actualStrokeWidth)
+                self.progressCircle.lineCap = .butt
                 self.progressCircle.lineWidth = self.actualStrokeWidth
 
                 let backgroundStrokeWidth = self.actualStrokeWidth > 0 ? ceil(self.actualStrokeWidth / 10.0) : 0.0
+                self.backgroundCircle.lineCap = .butt
                 self.backgroundCircle.path = self.getCirclePath(for: backgroundStrokeWidth)
                 self.backgroundCircle.lineWidth = backgroundStrokeWidth
 
             case .new:
                 self.progressCircle.path = self.getCirclePath(for: self.actualStrokeWidth)
+                self.progressCircle.lineCap = .round
                 self.progressCircle.lineWidth = self.actualStrokeWidth
 
                 self.backgroundCircle.path = self.getCirclePath(for: self.actualStrokeWidth)
+                self.backgroundCircle.lineCap = .round
                 self.backgroundCircle.lineWidth = self.actualStrokeWidth
         }
     }
