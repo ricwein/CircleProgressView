@@ -60,7 +60,6 @@ public class UICircleProgressButton: UIButton
         self.progressView.prepareForInterfaceBuilder()
     }
 
-    @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'status' instead.")
     @IBInspectable
     public var statusType: String? = DownloadStatus.paused.rawValue
     {
@@ -85,7 +84,6 @@ public class UICircleProgressButton: UIButton
         }
     }
 
-    @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'type' instead.")
     @IBInspectable
     public var useNewStyle: Bool = false
     {

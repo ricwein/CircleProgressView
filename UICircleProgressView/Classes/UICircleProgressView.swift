@@ -96,7 +96,6 @@ public class UICircleProgressView: UIView
         self.setup()
     }
 
-    @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'status' instead.")
     @IBInspectable
     public var statusType: String? = DownloadStatus.paused.rawValue
     {
@@ -117,7 +116,6 @@ public class UICircleProgressView: UIView
         didSet { if self.hasInitFinished { self.updateStatus() } }
     }
 
-    @available(*, unavailable, message: "This property is reserved for Interface Builder. Use 'type' instead.")
     @IBInspectable
     public var useNewStyle: Bool = false
     {
